@@ -9,12 +9,12 @@ class Variation
     @constant = constant
   end
 
-  def direct_v
-    @b.to_f * @constant
+  def direct_v(b)
+    b.to_f * @constant.to_f
   end
 
-  def inverse_v
-    @b.to_f / @constant
+  def inverse_v(b)
+    @constant.to_f / b.to_f
   end
 
 end
