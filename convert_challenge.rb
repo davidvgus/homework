@@ -1,9 +1,15 @@
 
 
 
-Labels = ["Fahrenheit", "Celcius", "Kelvin", "Rankine"]
+Labels = {"f" => "Fahrenheit",
+          "c" => "Celsius",
+          "k" => "Kelvin",
+          "r" => "Rankine"}
 
-ConversionLabels = {"f2c" => [Labels[0], Labels[1]], "c2f" => [Labels[1], Labels[0]]}
+ConversionLabels = {"f2c" => [Labels['f'], Labels['c']],
+                    "c2f" => [Labels['c'], Labels['f']],
+                    "f2k" => [Labels['f'], Labels['k']],
+                    "c2k" => [Labels['c'], Labels['k']]}
 
 def complain(args)
   puts args
@@ -15,17 +21,14 @@ def check_range(degrees, scale)
   violated = false
   violation_string_base = "Degrees out of range, choose a number between"
   range_string = ""
-  case scale
-    when "Fahrenheit"
-      if (degrees < -459.67) or (degrees > 210)
-        violated = true
-        range_string = " -459 and 210"
-      end
-    when "Celcius"
-      if (degrees < -273.15) or (degrees > 100)
-        violated = true
-        range_string = " -273.15 and 100"
-      end
+  ranges = {"Fahrenheit" => [-459.67, 210.0],
+                    "Celsius" => [-273.15, 100.0],
+                    "Kelvin" => [0.15, 373.15],
+                    "Rankine" => []}
+
+  if (degrees < ranges[scale][0]) or (degrees > ranges[scale][1])
+    violated = true
+    range_string = " %0.2f and %0.2f" % ranges[scale]
   end
 
   if violated
@@ -34,18 +37,41 @@ def check_range(degrees, scale)
   end
 end
 
-def convert_from_fahrenheit_to_celcius(fdegrees)
+def convert_from_fahrenheit_to_celsius(fdegrees)
   check_range(fdegrees, "Fahrenheit")
-  celcius = (fdegrees - 32.0) * (5.0/9.0)
+  celsius = (fdegrees - 32.0) * (5.0/9.0)
 end
 
-def convert_from_celcius_to_fahrenheit(cdegrees)
-  check_range(fdegrees, "Celcius")
+def convert_from_fahrenheit_to_kelvin(fdegrees)
+  kelvin = convert_from_fahrenheit_to_celsius(fdegrees) + 273.15
+end
+
+def convert_from_celsius_to_fahrenheit(cdegrees)
+  check_range(cdegrees, "Celsius")
   fahrenheit = (cdegrees * (9.0 / 5.0)) + 32.0
 end
 
-ConversionMethods = {"f2c" => method(:convert_from_fahrenheit_to_celcius),
-                "c2f" => method(:convert_from_celcius_to_fahrenheit)}
+def convert_from_celsius_to_kelvin(cdegrees)
+  check_range(cdegrees, "Celsius")
+  kelvin = cdegrees + 273.15
+end
+
+def convert_from_kelvin_to_celsius(kdegrees)
+  check_range(kdegrees, "Kelvin")
+  celsius = convert_from_celsius_to_fahrenheit(kdegrees - 273.15)
+end
+
+def convert_from_kelvin_to_fahrenheit(kdegrees)
+  cdegrees = convert_from_kelvin_to_celsius(kdegrees)
+  kelvin = convert_from_celsius_to_fahrenheit(cdegrees)
+end
+
+ConversionMethods = {"f2c" => method(:convert_from_fahrenheit_to_celsius),
+                "f2k" => method(:convert_from_fahrenheit_to_kelvin),
+                "c2f" => method(:convert_from_celsius_to_fahrenheit),
+                "c2k" => method(:convert_from_celsius_to_kelvin),
+                "k2f" => method(:convert_from_kelvin_to_fahrenheit),
+                "k2c" => method(:convert_from_kelvin_to_celsius)}
 
 def execute_conversion(conversion_method, degrees)
   ConversionMethods[conversion_method].call(degrees)
@@ -65,21 +91,23 @@ def parse_input(input)
 end
 
 
-intro_string = <<END_INTRO
+puts <<END_INTRO
 
 ----------------------------------------------------
 This is a temperature conversion program.
-At the prompt first type your conversion preference:
+At the prompt type your conversion preference:
 
-For Fahrenheit to Celcius type: f2c  n
-
-For Celcius to Fahrenheit type: c2f  n
-
-Where "n" is the number you wish to convert.
-----------------------------------------------------
 END_INTRO
 
-puts intro_string
+commands = ConversionLabels.keys
+
+commands.each do |k|
+  puts "for %s to %s type: %s n" % [ConversionLabels[k][0], ConversionLabels[k][1], k]
+end
+
+puts "\nWhere \"n\" is the number you wish to convert."
+puts "----------------------------------------------------"
+
 print "Enter Conversion Options\n>>"
 
 conversion_method, original_degrees = parse_input(gets.chomp())
