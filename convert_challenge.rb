@@ -68,7 +68,7 @@ converted_degrees = execute_conversion(conversion_method, original_degrees)
 
 pre_conversion_label, post_conversion_label = ConversionLabels[conversion_method]
 
-printf ("%.2f degrees %s is equal to %.2f degrees %s\n" % [original_degrees,
+puts "%.2f degrees %s is equal to %.2f degrees %s\n" % [original_degrees,
                                                            pre_conversion_label,
                                                            converted_degrees,
-                                                           post_conversion_label])
+                                                           post_conversion_label]
