@@ -10,17 +10,30 @@ def complain(args)
   exit
 end
 
-def convert_from_fahrenheit_to_celcius(fdegrees)
-  if (fdegrees < -459.67) or (fdegrees > 210)
-    complain "Degrees out of range, choose a number between -459 and 210 for Fahrenheit"
+
+def check_range(degrees, scale)
+
+  case scale
+    when "Fahrenheit"
+      if (degrees < -459.67) or (fdegrees > 210)
+        complain "Degrees out of range, choose a number between -459 and 210 for Fahrenheit"
+      end
+    when "Celcius"
+      if (degrees < -273.15) or (cdegrees > 100)
+        complain "Degrees out of range, choose a number between -273.15 and 100 for Fahrenheit"
+      end
   end
+
+
+end
+
+def convert_from_fahrenheit_to_celcius(fdegrees)
+  check_range(fdegrees, "Fahrenheit")
   celcius = (fdegrees - 32.0) * (5.0/9.0)
 end
 
 def convert_from_celcius_to_fahrenheit(cdegrees)
-  if (cdegrees < -273.15) or (cdegrees > 100)
-    complain "Degrees out of range, choose a number between -273.15 and 100 for Fahrenheit"
-  end
+  check_range(fdegrees, "Celcius")
   fahrenheit = (cdegrees * (9.0 / 5.0)) + 32.0
 end
 
