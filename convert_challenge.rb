@@ -12,19 +12,26 @@ end
 
 
 def check_range(degrees, scale)
-
+  violated = false
+  violation_string_base = "Degrees out of range, choose a number between"
+  range_string = ""
   case scale
     when "Fahrenheit"
-      if (degrees < -459.67) or (fdegrees > 210)
-        complain "Degrees out of range, choose a number between -459 and 210 for Fahrenheit"
+      if (degrees < -459.67) or (degrees > 210)
+        violated = true
+        range_string = " -459 and 210"
       end
     when "Celcius"
-      if (degrees < -273.15) or (cdegrees > 100)
-        complain "Degrees out of range, choose a number between -273.15 and 100 for Fahrenheit"
+      if (degrees < -273.15) or (degrees > 100)
+        violated = true
+        range_string = " -273.15 and 100"
       end
   end
 
-
+  if violated
+    puts violation_string_base + range_string + " for " + scale + "."
+    complain "Out of Range Error, Exiting"
+  end
 end
 
 def convert_from_fahrenheit_to_celcius(fdegrees)
