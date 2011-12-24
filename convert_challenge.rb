@@ -32,7 +32,7 @@ def check_range(degrees, scale)
   ranges = {"Fahrenheit" => [-459.67, 210.0],
             "Celsius" => [-273.15, 100.0],
             "Kelvin" => [0.15, 373.15],
-            "Rankine" => []}
+            "Rankine" => [64.8, 671.67]}
 
   if (degrees < ranges[scale][0]) or (degrees > ranges[scale][1])
     violated = true
@@ -83,7 +83,7 @@ def convert_from_kelvin_to_fahrenheit(kdegrees)
 end
 
 def convert_from_rankine_to_celsius(rdegrees)
-  celcius = (rdegrees -491.67) * (9.0/5.0)
+  celcius = (rdegrees -491.67) * (5.0/9.0)
 end
 
 def convert_from_rankine_to_fahrenheit(rdegrees)
@@ -102,7 +102,7 @@ ConversionMethods = {"f2c" => method(:convert_from_fahrenheit_to_celsius),
                      "c2r" => method(:convert_from_celsius_to_rankine),
                      "k2f" => method(:convert_from_kelvin_to_fahrenheit),
                      "k2c" => method(:convert_from_kelvin_to_celsius),
-                     "k2k" => method(:convert_from_kelvin_to_rankine),
+                     "k2r" => method(:convert_from_kelvin_to_rankine),
                      "r2f" => method(:convert_from_rankine_to_fahrenheit),
                      "r2c" => method(:convert_from_rankine_to_celsius),
                      "r2k" => method(:convert_from_rankine_to_kelvin)}
