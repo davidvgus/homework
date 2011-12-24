@@ -46,7 +46,6 @@ def check_range(degrees, scale)
 end
 
 def convert_from_fahrenheit_to_celsius(fdegrees)
-  #check_range(fdegrees, "Fahrenheit")
   celsius = (fdegrees - 32.0) * (5.0/9.0)
 end
 
@@ -59,12 +58,10 @@ def convert_from_fahrenheit_to_rankine(fdegrees)
 end
 
 def convert_from_celsius_to_fahrenheit(cdegrees)
-  #check_range(cdegrees, "Celsius")
   fahrenheit = (cdegrees * (9.0 / 5.0)) + 32.0
 end
 
 def convert_from_celsius_to_kelvin(cdegrees)
-  #check_range(cdegrees, "Celsius")
   kelvin = cdegrees + 273.15
 end
 
@@ -73,7 +70,6 @@ def convert_from_celsius_to_rankine(cdegrees)
 end
 
 def convert_from_kelvin_to_celsius(kdegrees)
-  #check_range(kdegrees, "Kelvin")
   celsius = convert_from_celsius_to_fahrenheit(kdegrees - 273.15)
 end
 
@@ -86,18 +82,15 @@ def convert_from_kelvin_to_fahrenheit(kdegrees)
   kelvin = convert_from_celsius_to_fahrenheit(cdegrees)
 end
 
-def convert_from_rankine_to_celcius(rdegrees)
-  #check_range(rdegrees, "Rankine")
+def convert_from_rankine_to_celsius(rdegrees)
   celcius = (rdegrees -491.67) * (9.0/5.0)
 end
 
 def convert_from_rankine_to_fahrenheit(rdegrees)
-  #check_range(rdegrees, "Rankine")
   fahrenheit = rdegrees - 459.67
 end
 
 def convert_from_rankine_to_kelvin(rdegrees)
-  #check_range(rdegrees, "Rankine")
   kelvin = rdegrees * (5.0/9.0)
 end
 
@@ -112,7 +105,7 @@ ConversionMethods = {"f2c" => method(:convert_from_fahrenheit_to_celsius),
                      "k2k" => method(:convert_from_kelvin_to_rankine),
                      "r2f" => method(:convert_from_rankine_to_fahrenheit),
                      "r2c" => method(:convert_from_rankine_to_celsius),
-                     "r2k" => method(:convert_from_rankine_to_rankine)}
+                     "r2k" => method(:convert_from_rankine_to_kelvin)}
 
 def execute_conversion(conversion_method, degrees)
   ConversionMethods[conversion_method].call(degrees)
