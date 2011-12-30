@@ -11,8 +11,8 @@ doctest: This should return the x lines with the line prefix
 
 def parse_s(string)
   parsed_string = ""
-  string.each_line().with_index(1) do |line, line_number|
-    parsed_string << "Line %d: %s" % [line_number, line]
+  string.each_line.with_index(1) do |line, line_number|
+    parsed_string << "Line %d: %s\n" % [line_number, line.chomp()]
   end
   parsed_string
 end

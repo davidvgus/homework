@@ -1,15 +1,20 @@
 require 'win32console' if RUBY_PLATFORM =~ /mingw/
 
 =begin
-doctest: First doctest
->> prompt("Enter:'test'>")
-=> "test"
+doctest: Testing prompt
+>> prompt("Enter:'test'>", "test_string")
+=> "test_string"
+NOTE TO SELF  WRITE NEW TESTS!
 =end
 
-def prompt(prompt_string)
+def prompt(prompt_string, test_string = nil)
   print prompt_string
   STDOUT.flush
-  gets.chomp
+  if test_string
+    test_string.chomp
+  else
+    gets.chomp
+  end
 end
 
 
