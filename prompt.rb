@@ -11,9 +11,9 @@ def prompt(prompt_string, test_string = nil)
   print prompt_string
   STDOUT.flush
   if test_string
-    test_string.chomp
+    test_string
   else
-    gets.chomp
+    gets
   end
 end
 

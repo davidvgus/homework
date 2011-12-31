@@ -19,9 +19,9 @@ doctest: testing on string from file
 
 def parse_s(string)
   parsed_string = ""
-  cell_size = string.split.count.to_s.length
+  cell_size = string.split("\n").count.to_s.length
   string.each_line.with_index(1) do |line, line_number|
-    parsed_string << "Line %0#{cell_size}d: %s\n" % [line_number, line.chomp()]
+    parsed_string << "Line %0#{cell_size}d: %s" % [line_number, line]
   end
   parsed_string
 end
