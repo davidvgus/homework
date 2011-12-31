@@ -6,6 +6,9 @@ require 'win32console' if RUBY_PLATFORM =~ /mingw/
 doctest: Test that format_num(1000000) outputs as string "1,000,000"
 >> format_num(1000000)
 => "1,000,000"
+doctest: Test that format_num(1) outputs as string "1"
+>> format_num(1)
+=> "1"
 =end
 
 def format_num(int)

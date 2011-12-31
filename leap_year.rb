@@ -1,5 +1,20 @@
 require 'win32console' if RUBY_PLATFORM =~ /mingw/
 
+#learned from : https://github.com/Ramaze/ramaze/blob/master/lib/ramaze/helper/formatting.rb#L45-56
+
+=begin
+doctest: Test that format_num(1000000) outputs as string "1,000,000"
+>> format_num(1000000)
+=> "1,000,000"
+doctest: Test that format_num(1) outputs as string "1"
+>> format_num(1)
+=> "1"
+=end
+
+def format_num(int)
+  int.to_s.reverse.scan(/\d{1,3}/).reverse.join(",")
+end
+
 =begin
 doctest: test divisible_by? with 2000 and 4
 >> divisible_by?(2000, 4)
@@ -94,10 +109,9 @@ divisible by 400.
   years = [2000, 2004, 1900, 2005]
   years.each do |year|
     if leap_year?(year)
-      puts "There are %d minutes in leap year %d" % [minutes_in_year(year, true), year]
+      puts "There are %s minutes in leap year %d" % [format_num(minutes_in_year(year, true)), year]
     else
-      puts "There are %d minutes in %d" % [minutes_in_year(year), year]
+      puts "There are %s minutes in %d" % [format_num(minutes_in_year(year)), year]
     end
   end
-
 end
