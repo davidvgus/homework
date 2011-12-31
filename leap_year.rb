@@ -24,16 +24,12 @@ doctest: test divisible_by?  with 2001 4
 => false
 =end
 
-def divisible_by?(num = nil, denominator)
-  if num % denominator == 0
-    true
-  else
-    false
-  end
+def divisible_by?(num, denominator)
+    num % denominator == 0
 end
 
 =begin
-doctest: First test will return nil if no year was passed into the method
+doctest: First test will return false if no year was passed into the method
 >> leap_year?()
 => false
 doctest: test leap_year? on 2001
@@ -54,18 +50,23 @@ doctest: test leap_year? on 2700
 REMEMBER TO MAKE NEW TESTS
 =end
 
+#def leap_year?(year = nil)
+#  if year.nil?
+#    false
+#  elsif year.is_a?(Fixnum) && year.to_s.length > 0
+#    if divisible_by?(year, 400)
+#      true
+#    elsif !divisible_by?(year, 100) && divisible_by?(year, 4)
+#      true
+#    else
+#      false
+#    end
+#  end
+#end
+
 def leap_year?(year = nil)
-  if year.nil?
-    false
-  elsif year.is_a?(Fixnum) && year.to_s.length == 4
-    if divisible_by?(year, 400)
-      true
-    elsif !divisible_by?(year, 100) && divisible_by?(year, 4)
-      true
-    else
-      false
-    end
-  end
+  return false if year.nil?
+	divisible_by?(year, 400) || !divisible_by?(year, 100) && divisible_by?(year, 4)
 end
 
 
