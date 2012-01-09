@@ -22,32 +22,34 @@ def complain
   "HUH?! SPEAK UP, SONNY!"
 end
 
+
 =begin
-doctest: return a year between 1930 and 1950
->> y = year()
->> (1930..1950).include?(year)
-=> true
+doctest: year method always returns a year between 1930 and 1950 (sample size 1000)
+>> answers = []
+>> 1000.times { answers << (1930..1950).include?(year) }
+>> answers.include?(false)
+=> false
 =end
 
+
 def year
-  r = (1930..1950)
-  r.to_a[rand(r.to_a.length)]
+  1930 + rand(21)
 end
 
 
 
 if __FILE__ == $0 then
-  running = true
+  input = ""
 
-  while running do
+  until input.include?("BYE")
     input = prompt("You say to Grandma: ")
-    if input.include?("BYE")
-      puts "BE A GOOD KID!  BYE!"
-      running = false
-    elsif is_upcase?(input)
+    if is_upcase?(input)
       puts "NO, NOT SINCE %s!" % year
     else
       puts complain
     end
   end
+
+  puts "BE A GOOD KID!  BYE!"
+  
 end
