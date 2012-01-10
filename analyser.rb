@@ -90,7 +90,7 @@ if __FILE__ == $0 then
   stats[:average_number_of_words_per_sentence] = stats[:word_count] / stats[:sentence_count]
 
   stats.each do |k,v|
-    puts "%s: %s" % [k, v]
+    puts "%-41s: %s" % [k, v]
   end
 end
 
