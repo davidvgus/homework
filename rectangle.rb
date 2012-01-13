@@ -22,8 +22,6 @@ doctest: Test peremeter
 >> r1 = Rectangle.new(1.0, 2.0)
 >> r1.perimeter
 => 6.0
-
-
 =end
 
   def perimeter
@@ -40,7 +38,6 @@ doctest: Test area
   def area
     @length * @width
   end
-
 end
 
 
