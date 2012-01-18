@@ -14,26 +14,22 @@ def load_file_contents(file_name)
   end
 end
 
+
+
 def print_help_message(num_of_lines)
-  puts "====================\n  Manifest Entries: %d\n  Entries Required: 2" % num_of_lines
-  puts "  Please run listing.rb %d more time%s.\n====================" % [(2 - num_of_lines), ('s' if num_of_lines > 1)]
+  sep = "=" * 20
+  puts "#{sep}\n  Manifest Entries: %d\n  Entries Required: 2" % num_of_lines
+  puts "  Please run listing.rb %d more time%s.\n#{sep}" % [(2 - num_of_lines), ('s' if num_of_lines > 1)]
 end
 
 if File.exists?(manifest)
   previous_file, current_file = load_file_contents(manifest)
-  
-  #if previous_file && File.exists?(previous_file)
-  #  previous_listing = load_file_contents(previous_file)
-  #end
+
   previous_listing = load_file_contents(previous_file) if previous_file && File.exists?(previous_file)
 
-
-  #if current_file && File.exists?(current_file)
-  #  current_listing = load_file_contents(current_file)
-  #end
   current_listing = load_file_contents(current_file) if current_file && File.exists?(current_file)
-  
-  if previous_listing && current_listing
+
+  unless previous_listing.empty? && current_listing.empty?
     new_file_system_objects = current_listing - previous_listing
     new_file_system_objects.each {|f| puts f}
   else
