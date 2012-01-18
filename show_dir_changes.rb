@@ -1,16 +1,46 @@
 
-file_name = "listtest.txt"
+# Name of the file that holds the list of the 2 most recent
+# inventory files.
+manifest = "manifest.txt"
 
 previous_listing  = []
+current_listing = []
 
-File.open(file_name, "r") do |f|
-  previous_listing  = f.read.split("\n")
-  #previous_listing  = f.readlines
+
+def load_file_contents(file_name)
+  File.open(file_name, "r") do |f|
+    f.read.split("\n")
+  end
 end
 
-current_listing = Dir.glob('**/*').sort
+def print_help_message(num_of_lines)
+  puts "====================\n  Manifest Entries: %d\n  Entries Required: 2" % num_of_lines
+  puts "  Please run listing.rb %d more time%s.\n====================" % [(2 - num_of_lines), ('s' if num_of_lines > 1)]
+end
 
-new_file_system_objects = current_listing - previous_listing
+if File.exists?(manifest)
+  previous_file, current_file = load_file_contents(manifest)
 
-new_file_system_objects.each {|f| puts f.upcase}
+  if previous_file && File.exists?(previous_file)
+    previous_listing = load_file_contents(previous_file)
+  end
+
+  if current_file && File.exists?(current_file)
+    current_listing = load_file_contents(current_file)
+  end
+  
+  if previous_listing && current_listing
+    new_file_system_objects = current_listing - previous_listing
+    new_file_system_objects.each {|f| puts f}
+  else
+    print_help_message(File.open("manifest.txt", "r").readlines.count)
+  end
+else
+  puts "No manifest.txt file exists."
+end
+
+
+
+
+
 
