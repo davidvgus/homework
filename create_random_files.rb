@@ -1,3 +1,4 @@
+#create_random_files.rb
 
 def validate_num(input)
   unless input.is_a?(Integer)

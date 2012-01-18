@@ -1,3 +1,4 @@
+#show_dir_changes.rb
 
 # Name of the file that holds the list of the 2 most recent
 # inventory files.
@@ -20,14 +21,17 @@ end
 
 if File.exists?(manifest)
   previous_file, current_file = load_file_contents(manifest)
+  
+  #if previous_file && File.exists?(previous_file)
+  #  previous_listing = load_file_contents(previous_file)
+  #end
+  previous_listing = load_file_contents(previous_file) if previous_file && File.exists?(previous_file)
 
-  if previous_file && File.exists?(previous_file)
-    previous_listing = load_file_contents(previous_file)
-  end
 
-  if current_file && File.exists?(current_file)
-    current_listing = load_file_contents(current_file)
-  end
+  #if current_file && File.exists?(current_file)
+  #  current_listing = load_file_contents(current_file)
+  #end
+  current_listing = load_file_contents(current_file) if current_file && File.exists?(current_file)
   
   if previous_listing && current_listing
     new_file_system_objects = current_listing - previous_listing

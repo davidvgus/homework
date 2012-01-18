@@ -1,3 +1,4 @@
+#inventory.rb 
 
 WORKING_DIRECTORY = "/home/dave/repositories/homework"
 MANIFEST_NAME = "manifest.txt"
