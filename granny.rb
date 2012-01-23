@@ -11,7 +11,6 @@ def yelling?(string)
   string == string.upcase
 end
 
-
 =begin
 doctest: return "HUH?! SPEAK UP, SONNY!"
 >> complain
@@ -21,7 +20,6 @@ doctest: return "HUH?! SPEAK UP, SONNY!"
 def complain
   "HUH?! SPEAK UP, SONNY!"
 end
-
 
 =begin
 doctest: year method always returns a year between 1930 and 1950 (sample size 1000)
