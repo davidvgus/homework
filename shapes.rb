@@ -1,4 +1,4 @@
-
+require 'win32console' if RUBY_PLATFORM =~ /mingw/
 
 =begin
 doctest: Create a Point and call its point() method
@@ -35,6 +35,15 @@ doctest: Create a shape.
 doctest: Rotate by 30 degrees
 >> shape.rotate(30)
 => 30
+doctest: Test rotate_over_time
+>> shape2 = Shape.new(10,10)
+>> shape2.rotate_over_time(5,1000) {|deg, mil| puts "#{deg}, #{mil}"; sleep mil}
+=> 1, 0.2
+=> 2, 0.2
+=> 3, 0.2
+=> 4, 0.2
+=> 5, 0.2
+=> 5
 =end
 
 class Shape
@@ -64,7 +73,7 @@ class Shape
   end
 end
 
-class RegularPolygon
+class RegularPolygon < Shape
   def initialize(x, y, points)
     #points is an array of Points tha represent the triangles vertexes
     @points = points.each do |point|
@@ -103,7 +112,7 @@ class Triangle < RegularPolygon
     @triangle_sound = "triangle.aif"
     #points is an array of Points tha represent the triangles vertexes
     @points = points
-    super(x, y, side_length)
+    super(x, y, points)
   end
 
   def play_sound
