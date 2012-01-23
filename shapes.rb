@@ -38,9 +38,9 @@ doctest: Rotate by 30 degrees
 =end
 
 class Shape
-  attr_accessor :position
+  attr_accessor :position, :heading_degrees
   def initialize(x,y)
-    @position = Point.new(x,y)
+    @position = Point.new(x, y)
     @heading_degrees = 0
   end
 
@@ -48,44 +48,66 @@ class Shape
     @position.point
   end
 
-  def rotate(degrees, direction="clockwise")
+  def play_sound(sound_file = 'default.aif')
+    puts sound_file
+  end
+
+  def rotate(degrees)
     @heading_degrees = (@heading_degrees + degrees) % 360
   end
 
-  def rotate_over_time(degrees, direction="clockwise", seconds)
-    milliseconds = seconds / 1000.0
+  def rotate_over_time(degrees, milliseconds, &block)
     milliseconds_per_degree = milliseconds / degrees.to_f
     degrees.times do
-      @heading_degrees = (@heading_degrees + 1) % 360
-      puts "sleeping for #{milliseconds_per_degree}"
-      puts "Degree is %s" % @heading_degrees
-      sleep milliseconds_per_degree
+      yield [@heading_degrees = (@heading_degrees + 1) % 360, milliseconds_per_degree / 1000.0 ]
     end
   end
 end
 
 class RegularPolygon
-  def initialize(x,y,side_length)
+  def initialize(x, y, points)
+    #points is an array of Points tha represent the triangles vertexes
+    @points = points.each do |point|
+      Point.new(point[0], point[1])
+    end
     super(x,y)
-    @side_length = side_length
   end
 end
 
 class Circle < Shape
-  def initialize(x,y, radius)
-    super()
+  def initialize(x, y, radius)
+    @circle_sound = "circle.aif"
+    @radius = radius
+    super(x,y)
   end
 
-  def rotate(degrees, direction="clockwise")
-
+  def play_sound
+    super(@circle_sound)
   end
+
 end
 
 class Square < RegularPolygon
+  def initialize(x, y, points, side_length)
+    @square_sound = "square.aif"
+    super(x, y, side_length)
+  end
 
+  def play_sound
+    super(@circle_sound)
+  end
 end
 
 class Triangle < RegularPolygon
+  def initialize(x, y, points, side_length)
+    @triangle_sound = "triangle.aif"
+    #points is an array of Points tha represent the triangles vertexes
+    @points = points
+    super(x, y, side_length)
+  end
 
+  def play_sound
+    super(@triangle_sound)
+  end
 end
 
