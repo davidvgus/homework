@@ -35,15 +35,6 @@ doctest: Create a shape.
 doctest: Rotate by 30 degrees
 >> shape.rotate(30)
 => 30
-doctest: Test rotate_over_time
->> shape2 = Shape.new(10,10)
->> shape2.rotate_over_time(5,1000) {|deg, mil| puts "#{deg}, #{mil}"; sleep mil}
-=> 1, 0.2
-=> 2, 0.2
-=> 3, 0.2
-=> 4, 0.2
-=> 5, 0.2
-=> 5
 =end
 
 class Shape
@@ -65,17 +56,17 @@ class Shape
     @heading_degrees = (@heading_degrees + degrees) % 360
   end
 
-  def rotate_over_time(degrees, milliseconds, &block)
-    milliseconds_per_degree = milliseconds / degrees.to_f
-    degrees.times do
-      yield [@heading_degrees = (@heading_degrees + 1) % 360, milliseconds_per_degree / 1000.0 ]
-    end
-  end
+  #def rotate_over_time(degrees, milliseconds, &block)
+  #  milliseconds_per_degree = milliseconds / degrees.to_f
+  #  degrees.times do
+  #    yield [@heading_degrees = (@heading_degrees + 1) % 360, milliseconds_per_degree / 1000.0 ]
+  #  end
+  #end
 end
 
 class RegularPolygon < Shape
   def initialize(x, y, points)
-    #points is an array of Points tha represent the triangles vertexes
+    #points is an array of Points tha represent the vertexes
     @points = points.each do |point|
       Point.new(point[0], point[1])
     end
@@ -93,13 +84,12 @@ class Circle < Shape
   def play_sound
     super(@circle_sound)
   end
-
 end
 
 class Square < RegularPolygon
-  def initialize(x, y, points, side_length)
+  def initialize(x, y, points)
     @square_sound = "square.aif"
-    super(x, y, side_length)
+    super(x, y, points)
   end
 
   def play_sound
@@ -110,8 +100,6 @@ end
 class Triangle < RegularPolygon
   def initialize(x, y, points, side_length)
     @triangle_sound = "triangle.aif"
-    #points is an array of Points tha represent the triangles vertexes
-    @points = points
     super(x, y, points)
   end
 
