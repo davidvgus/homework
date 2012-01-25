@@ -38,73 +38,54 @@ doctest: Rotate by 30 degrees
 =end
 
 class Shape
-  attr_accessor :position, :heading_degrees
-  def initialize(x,y)
+  def initialize(x,y, *args)
     @position = Point.new(x, y)
     @heading_degrees = 0
+    @points = []
+    @sound_file = self.class.to_s.downcase << ".aif"
+    unless self.class == Circle
+      args[0].each_with_index { |point, i| @points << Point.new(point[0], point[1])} if args
+    else
+      @radius = args if args
+    end
+
+  end
+
+  def on_click
+    rotate(360)
+    play_sound
   end
 
   def position
     @position.point
   end
 
-  def play_sound(sound_file = 'default.aif')
-    puts sound_file
+  def play_sound
+    @sound_file
   end
 
   def rotate(degrees)
     @heading_degrees = (@heading_degrees + degrees) % 360
   end
-
-  #def rotate_over_time(degrees, milliseconds, &block)
-  #  milliseconds_per_degree = milliseconds / degrees.to_f
-  #  degrees.times do
-  #    yield [@heading_degrees = (@heading_degrees + 1) % 360, milliseconds_per_degree / 1000.0 ]
-  #  end
-  #end
-end
-
-class RegularPolygon < Shape
-  def initialize(x, y, points)
-    #points is an array of Points tha represent the vertexes
-    @points = points.each do |point|
-      Point.new(point[0], point[1])
-    end
-    super(x,y)
-  end
 end
 
 class Circle < Shape
   def initialize(x, y, radius)
-    @circle_sound = "circle.aif"
-    @radius = radius
-    super(x,y)
-  end
-
-  def play_sound
-    super(@circle_sound)
+    super(x,y, radius)
   end
 end
 
-class Square < RegularPolygon
-  def initialize(x, y, points)
-    @square_sound = "square.aif"
-    super(x, y, points)
-  end
 
-  def play_sound
-    super(@circle_sound)
+#To draw polygons pass an array of x,y coordinates as the third argument.
+class Square < Shape
+  def initialize(x, y, *points)
+    super(x, y, points)
   end
 end
 
-class Triangle < RegularPolygon
-  def initialize(x, y, points, side_length)
-    @triangle_sound = "triangle.aif"
+class Triangle < Shape
+  def initialize(x, y, *points)
     super(x, y, points)
-  end
-
-  def play_sound
-    super(@triangle_sound)
   end
 end
 
