@@ -38,16 +38,19 @@ doctest: Rotate by 30 degrees
 =end
 
 class Shape
-  def initialize(x,y, *args)
+  def initialize(x,y, args = false)
     @position = Point.new(x, y)
     @heading_degrees = 0
     @points = []
     @sound_file = self.class.to_s.downcase << ".aif"
-    unless self.class == Circle
-      args[0].each_with_index { |point, i| @points << Point.new(point[0], point[1])} if args
-    else
-      @radius = args if args
+    if args
+      unless self.class == Circle
+       args[0].each_with_index { |point, i| @points << Point.new(point[0], point[1])}
+      else
+       @radius = args
+      end
     end
+
 
   end
 
@@ -70,22 +73,11 @@ class Shape
 end
 
 class Circle < Shape
-  def initialize(x, y, radius)
-    super(x,y, radius)
-  end
 end
 
-
-#To draw polygons pass an array of x,y coordinates as the third argument.
 class Square < Shape
-  def initialize(x, y, *points)
-    super(x, y, points)
-  end
 end
 
 class Triangle < Shape
-  def initialize(x, y, *points)
-    super(x, y, points)
-  end
 end
 
