@@ -10,7 +10,7 @@ while running
     unless return_value =~ /^nil$/
       puts "=> nil"
     else
-      puts "=> " &lt;&lt; return_value.to_s
+      puts "=> " << return_value.to_s
     end
 
     rescue Exception => e
