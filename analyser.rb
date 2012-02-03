@@ -1,4 +1,8 @@
 require 'win32console' if RUBY_PLATFORM =~ /mingw/
+require 'logger'
+
+$LOG = Logger.new('anal.log', 'monthly')
+$LOG.level = Logger::DEBUG
 
 =begin
 doctest: Count characters in string
@@ -13,6 +17,7 @@ doctest: Count non space characters in string
 =end
 
 def char_count(string, with_spaces = true)
+  $LOG.debug("#{__method__} invoked.")
   if with_spaces
     string.length
   else
@@ -27,14 +32,23 @@ doctest: count lines in file
 =end
 
 def lines_in_file(file, return_contents = false)
+  $LOG.debug("#{__method__}called with: " << file)
   number_of_lines = 0
   contents = ""
-  File.open(file, 'r') do |f|
-    while line = f.gets
-      number_of_lines  += 1
-      contents << line
+  begin
+    raise IOError, "#{file} doesn\'t exist." unless File.exists?(file)
+    File.open(file, 'r') do |f|
+      while line = f.gets
+        number_of_lines  += 1
+        contents << line
+      end
     end
+  rescue IOError => e
+    $LOG.fatal("IOError: #{e.message}")
+    puts "#{file} doesn\'t exist."
+    exit 1
   end
+
   if return_contents
     [number_of_lines, contents]
   else
@@ -49,6 +63,7 @@ doctest: count paragraphs
 =end
 
 def paragraph_count(string)
+  $LOG.debug("#{__method__} invoked.")
   string.split("\n\n").count
 end
 
@@ -59,6 +74,7 @@ doctest: count sentences in string
 =end
 
 def sentence_count(string)
+  $LOG.debug("#{__method__} invoked.")
   string.scan(/(.*!|.*\?|.*\.)/).length
 end
 
@@ -72,6 +88,7 @@ doctest: test with empty string
 =end
 
 def word_count(string)
+  $LOG.debug("#{__method__} invoked.")
   string.scan(/\S+/).count
 end
 
@@ -79,7 +96,7 @@ end
 
 
 if __FILE__ == $0 then
-  line_count, contents = lines_in_file("text.txt", true)
+  line_count, contents = lines_in_file("textblah.txt", true)
   stats = {:character_count => char_count(contents),
             :character_count_n_spaces => char_count(contents, false),
             :line_count => line_count,
