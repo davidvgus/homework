@@ -15,6 +15,7 @@ while running
 
     rescue Exception => e
       puts e.message
+      puts e.backtrace
     end
   else
     running = false
