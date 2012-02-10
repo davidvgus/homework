@@ -37,6 +37,8 @@ def execute_command_n_times(interval = 1, repetitions = 1)
     yield
     sleep interval
   end
+  rescue LocalJumpError => e
+    raise StandardError, "No block given #{__callee__}"
 end
 
 def execute_command_for(interval = 1, duration = 5)
@@ -46,6 +48,8 @@ def execute_command_for(interval = 1, duration = 5)
     sleep interval
     countdown -= interval
   end
+  rescue LocalJumpError => e
+    raise StandardError, "No block given #{__callee__}"
 end
 
 
