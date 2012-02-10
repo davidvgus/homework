@@ -30,9 +30,11 @@ opt_parser = OptionParser.new do |opt|
   opt.on("-h","--help","help") do
     puts opt_parser
   end
+
+
 end
 
-def execute_command_n_times(interval = 1, repetitions = 1)
+def repeat(interval = 1, repetitions = 1)
   repetitions.times do
     yield
     sleep interval
@@ -41,7 +43,7 @@ def execute_command_n_times(interval = 1, repetitions = 1)
     raise StandardError, "No block given #{__callee__}"
 end
 
-def execute_command_for(interval = 1, duration = 5)
+def repeat_for(interval = 1, duration = 5)
   countdown = duration
   while countdown > 0
     yield
@@ -54,11 +56,11 @@ end
 
 
 if __FILE__ == $0 then
-  opt_parser.parse!
 
-  puts options
 
   begin
+    opt_parser.parse!
+
     raise StandardError, "Options -r and -d are mutually exclusive." if options[:duration] && options[:repetitions]
     raise StandardError, "Either -r or -d are required." unless options[:duration] || options[:repetitions]
     raise StandardError, "The -i and -c switches are required." unless options[:command] && options[:interval]
@@ -69,9 +71,9 @@ if __FILE__ == $0 then
     
     case mode
       when :repetitions
-        execute_command_n_times(options[:interval], options[:repetitions]) { eval(options[:command])}
+        repeat(options[:interval], options[:repetitions]) { eval(options[:command])}
       when :duration
-        execute_command_for(options[:interval], options[:duration]) { eval(options[:command])}
+        repeat_for(options[:interval], options[:duration]) { eval(options[:command])}
       else
         raise StandardError, "Either -r or -d are required." unless options[:duration] || options[:repetitions]
     end
