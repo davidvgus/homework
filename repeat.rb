@@ -23,7 +23,7 @@ opt_parser = OptionParser.new do |opt|
     options[:repetitions] = repetitions
   end
 
-  opt.on("-i","--interval  SECONDS", Integer, "COMMAND will repeat every -s INTEGER seconds.") do |interval|
+  opt.on("-i","--interval  SECONDS", Float, "COMMAND will repeat every -s INTEGER seconds.") do |interval|
     options[:interval] = interval
   end
 
@@ -32,17 +32,17 @@ opt_parser = OptionParser.new do |opt|
   end
 end
 
-def execute_command_n_times(command, interval = 1, repetitions = 1)
+def execute_command_n_times(interval = 1, repetitions = 1)
   repetitions.times do
-    puts `#{command}`
+    yield
     sleep interval
   end
 end
 
-def execute_command_for(command, interval = 1, duration = 5)
+def execute_command_for(interval = 1, duration = 5)
   countdown = duration
   while countdown > 0
-    puts `#{command}`
+    yield
     sleep interval
     countdown -= interval
   end
@@ -61,12 +61,12 @@ if __FILE__ == $0 then
     # Is the program running in repetition or duration mode?
     mode = options[:duration] ? :duration : :repetitions
 
-
+    
     case mode
       when :repetitions
-        execute_command_n_times(options[:command], options[:interval], options[:repetitions])
+        execute_command_n_times(options[:interval], options[:repetitions]) { eval(options[:command])}
       when :duration
-        execute_command_for(options[:command], options[:interval], options[:duration])
+        execute_command_for(options[:interval], options[:duration]) { eval(options[:command])}
       else
         raise StandardError, "Either -r or -d are required." unless options[:duration] || options[:repetitions]
     end
