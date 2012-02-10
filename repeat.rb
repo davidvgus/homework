@@ -5,7 +5,7 @@ require "optparse"
 options = {}
 
 opt_parser = OptionParser.new do |opt|
-  opt.banner = "Usage:  repeat -i TIME_IN_SECONDS_BETWEEN_REPS -c COMMAND [-d DURATION] [-r NUM_OF_REPETITIONS]"
+  opt.banner = "Usage:  repeat -i TIME_IN_SECONDS_BETWEEN_REPS -c COMMAND [-d DURATION OR -r NUM_OF_REPETITIONS]"
   opt.separator ""
   opt.separator "    -r and -d are mutually exclusive."
   opt.separator ""
@@ -57,6 +57,7 @@ if __FILE__ == $0 then
   begin
     raise StandardError, "Options -r and -d are mutually exclusive." if options[:duration] && options[:repetitions]
     raise StandardError, "Either -r or -d are required." unless options[:duration] || options[:repetitions]
+    raise StandardError, "The -i and -c switches are required." unless options[:command] && options[:interval]
 
     # Is the program running in repetition or duration mode?
     mode = options[:duration] ? :duration : :repetitions
