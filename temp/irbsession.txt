@@ -1,0 +1,43 @@
+
+
+
+require 'net/http'
+require 'net/https'
+require 'cgi'
+require 'rubygems'
+require 'xmlsimple'
+require 'pp'
+
+def get_feed(uri, headers=nil)
+  uri = URI.parse(uri)
+  Net::HTTP.start(uri.host, uri.port) do |http|
+    return http.get(uri.path, headers)
+  end
+end
+
+email = 'email'
+password = CGI::escape('passsword')
+service = 'writely'
+source = 'MyCompany-MyApp-0.1'
+path = '/accounts/ClientLogin'
+
+data = ["accountType=HOSTED_OR_GOOGLE",
+        "Email=#{email}",
+        "Passwd=#{password}",
+        "service=#{service}",
+        "source=#{source}"].join('&')
+
+http = Net::HTTP.new(host='www.google.com', port=443)
+http.use_ssl = true
+http.start
+
+headers = {'Content-Type' => 'application/x-www-form-urlencoded'}
+resp, data = http.post(path, data, headers)
+
+token = data[/Auth=(.*)/, 1]  # parse out the Auth token
+
+headers['Authorization'] = "GoogleLogin auth=#{token}"
+resp = get_feed('http://docs.google.com/feeds/documents/private/full', headers)
+
+doc = XmlSimple.xml_in(resp.body, 'KeyAttr' => 'name')
+pp doc
