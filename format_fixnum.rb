@@ -12,5 +12,5 @@ doctest: Test that format_num(1) outputs as string "1"
 =end
 
 def format_num(int)
-  int.to_s.reverse.scan(/\d{1,3}/).reverse.join(",")
+  int.to_s.reverse.scan(/\d{1,3}/).reverse.collect{|a| a.reverse}.join(',')
 end
